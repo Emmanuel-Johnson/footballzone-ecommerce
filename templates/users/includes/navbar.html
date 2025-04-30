@@ -1,0 +1,31 @@
+{% load static %}
+<div class="header-bottom header-bottom-bg-color sticky-bar">
+    <div class="container">
+        <div class="header-wrap header-space-between position-relative">
+            <div class="header-nav d-none d-lg-flex justify-content-center w-100">
+                <div class="main-menu main-menu-padding-1 main-menu-lh-2">
+                    <nav>
+                        <ul class="d-flex m-0 p-0">
+                            <li class="nav-item">
+                                <a class="nav-link {% if 'home' in request.path %}active{% endif %}"
+                                   href="{% url 'home' %}">Home</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link {% if 'shop' in request.path %}active{% endif %}"
+                                   href="{% url 'shop' %}">Shop</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link {% if 'about' in request.path %}active{% endif %}"
+                                   href="{% url 'about' %}">About</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link {% if 'contact' in request.path %}active{% endif %}"
+                                   href="{% url 'contact' %}">Contact</a>
+                            </li>
+                        </ul>
+                    </nav>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,36 @@
+{% load static %}
+<aside class="navbar-aside" id="offcanvas_aside">
+    <div class="aside-top">
+        <a href="{% url 'dashboard' %}" class="brand-wrap">
+            <img src="{% static 'admin/assets/imgs/theme/footballzone_logo.png' %}"
+                 class="logo"
+                 alt="Evara Dashboard">
+        </a>
+        <div>
+            <button class="btn btn-icon btn-aside-minimize">
+                <i class="text-muted material-icons md-menu_open"></i>
+            </button>
+        </div>
+    </div>
+    <nav>
+        <ul class="menu-aside">
+            <li class="menu-item {% if 'dashboard' in request.path %} active {% endif %}">
+            <a class="menu-link" href="{% url 'dashboard' %}"> <i class="icon material-icons md-home"></i>
+            <span class="text">Dashboard</span>
+        </a>
+    </li>
+    <li class="menu-item {% if 'users' in request.path %} active {% endif %}">
+        <a class="menu-link" href="{% url 'users_list' %}"> <i class="icon material-icons md-person"></i>
+        <span class="text">Users</span>
+        </a>
+        </li>
+    <li class="menu-item {% if 'products' in request.path %} active {% endif %}">
+    <a class="menu-link" href="{% url 'products_list' %}"> <i class="icon material-icons md-shopping_bag"></i>
+    <span class="text">Products</span>
+</a>
+</li>
+</ul>
+<br>
+<br>
+</nav>
+</aside>
