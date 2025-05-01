@@ -1,8 +1,8 @@
 from django.shortcuts import render
 
 
-def register_login(request):
-    return render(request, "users/accounts/register_login.html")
+def login_register(request):
+    return render(request, "users/accounts/login_register.html")
 
 
 def user_profile(request):

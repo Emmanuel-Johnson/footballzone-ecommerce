@@ -1,8 +1,8 @@
 ﻿{% extends 'users/base.html' %}
 {% load static %}
 {% block title %}
-    Register /
-    Login
+Login /
+Register 
 {% endblock %}
 {% block content %}
     <div class="mobile-header-active mobile-header-wrapper-style">
@@ -314,8 +314,8 @@
         <div class="page-header breadcrumb-wrap">
             <div class="container">
                 <div class="breadcrumb">
-                    <a href="index.html" rel="nofollow">Home</a>
-                    <span></span> Pages <span></span> Login / Register
+                    <a href="{% url 'home' %}">Home</a>
+                    <span></span> Login / Register
                 </div>
             </div>
         </div>
@@ -332,7 +332,7 @@
                                         </div>
                                         <form method="post">
                                             <div class="form-group">
-                                                <input type="text" required="" name="email" placeholder="Your Email" />
+                                                <input id="email-input" type="text" required="" name="email" placeholder="Your Email" />
                                             </div>
                                             <div class="form-group">
                                                 <input required="" type="password" name="password" placeholder="Password" />
@@ -345,15 +345,13 @@
                                                                name="checkbox"
                                                                id="exampleCheckbox1"
                                                                value="" />
-                                                        <label class="form-check-label" for="exampleCheckbox1">
-                                                            <span>Remember me</span>
-                                                        </label>
+                                                        
                                                     </div>
                                                 </div>
                                                 <a class="text-muted" href="#">Forgot password?</a>
                                             </div>
                                             <div class="form-group">
-                                                <button type="submit"
+                                                <button style="width: 100%;" type="submit"
                                                         class="btn btn-fill-out btn-block hover-up"
                                                         name="login">Log in</button>
                                             </div>
@@ -369,9 +367,7 @@
                                             <h3 class="mb-30">Create an Account</h3>
                                         </div>
                                         <p class="mb-50 font-sm">
-                                            Your personal data will be used to support your experience
-                                            throughout this website, to manage access to your account,
-                                            and for other purposes described in our privacy policy
+                                            We use your personal data to enhance your experience on this website and to manage access to your account
                                         </p>
                                         <form method="post">
                                             <div class="form-group">
@@ -389,24 +385,8 @@
                                                        name="password"
                                                        placeholder="Confirm password" />
                                             </div>
-                                            <div class="login_footer form-group">
-                                                <div class="chek-form">
-                                                    <div class="custome-checkbox">
-                                                        <input class="form-check-input"
-                                                               type="checkbox"
-                                                               name="checkbox"
-                                                               id="exampleCheckbox12"
-                                                               value="" />
-                                                        <label class="form-check-label" for="exampleCheckbox12">
-                                                            <span>I agree to terms &amp; Policy.</span>
-                                                        </label>
-                                                    </div>
-                                                </div>
-                                                <a href="page-privacy-policy.html"><i class="fi-rs-book-alt mr-5 text-muted"></i>Lean
-                                                more</a>
-                                            </div>
                                             <div class="form-group">
-                                                <button type="submit"
+                                                <button style="width: 100%;" type="submit"
                                                         class="btn btn-fill-out btn-block hover-up"
                                                         name="login">Submit &amp; Register</button>
                                             </div>
@@ -415,15 +395,12 @@
                                             <span>or</span>
                                         </div>
                                         <ul class="btn-login list_none text-center mb-15">
-                                            <li>
-                                                <a href="#" class="btn btn-facebook hover-up mb-lg-0 mb-sm-4">Login With Facebook</a>
-                                            </li>
-                                            <li>
+                                            <li style="width: 96%;">
                                                 <a href="#" class="btn btn-google hover-up">Login With Google</a>
                                             </li>
                                         </ul>
                                         <div class="text-muted text-center">
-                                            Already have an account? <a href="#">Sign in now</a>
+                                            Already have an account? <a href="#" id="sign-in-link">Sign in now</a>
                                         </div>
                                     </div>
                                 </div>
@@ -434,4 +411,13 @@
             </div>
         </section>
     </main>
+    <script>
+        const signInLink = document.getElementById('sign-in-link');
+        const emailInput = document.getElementById('email-input');
+    
+        signInLink.addEventListener('click', function(e) {
+            e.preventDefault(); 
+            emailInput.focus();   
+        });
+    </script>
 {% endblock %}
