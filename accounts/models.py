@@ -41,4 +41,3 @@ from django.db import models
 
 
 
-restart for daily mininum 30 min
