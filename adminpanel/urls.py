@@ -6,7 +6,13 @@ urlpatterns = [
     path("", lambda request: redirect("login")),
     path("login/", views.login, name="login"),
     path("dashboard/", views.dashboard, name="dashboard"),
-    path("users-list/", views.users, name="users_list"),
-    path("categories-list/", views.categories, name="categories_list"),
-    path("products-list/", views.products, name="products_list"),
+    path("users-list/", views.users_list, name="users_list"),
+    path("user-add/", views.user_add, name="user_add"),
+
+    path("categories-list/", views.categories_list, name="categories_list"),
+    path("category-edit/", views.category_edit, name="category_edit"),
+
+    path("products-list/", views.products_list, name="products_list"),
+    path("product-add/", views.product_add, name="product_add"),
+    path("product-edit/", views.product_edit, name="product_edit"),
 ]

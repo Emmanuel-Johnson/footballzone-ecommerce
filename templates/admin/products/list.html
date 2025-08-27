@@ -8,9 +8,10 @@
                     <h2 class="content-title card-title">Products List</h2>
                     <p>Add, edit or delete a product</p>
                 </div>
-                <div>
-                    <a href="#" class="btn btn-primary btn-sm rounded">Create product</a>
-                </div>
+                <div class="d-grid">
+                    <a href="{% url 'product_add' %}">
+                                    <button class="btn btn-primary"><i class="material-icons md-plus"></i>Add New Product</button>
+                              </a>  </div>
             </div>
             <div class="card mb-4">
                 <header class="card-header">
@@ -26,10 +27,9 @@
 
                         <div class="col-md-2 col-6">
                             <select class="form-select">
-                                <option selected>Status</option>
+                                <option selected>Show all</option>
                                 <option>Active</option>
                                 <option>Disabled</option>
-                                <option>Show all</option>
                             </select>
                         </div>
                     </div>
@@ -49,7 +49,7 @@
                                     </div>
                                 </a>
                             </div>
-                            <div class="col-lg-2 col-sm-2 col-4 col-price"> <span>$990.99</span> </div>
+                            <div class="col-lg-2 col-sm-2 col-4 col-price"> <span>₹990.99</span> </div>
                             <div class="col-lg-2 col-sm-2 col-4 col-status">
                                 <span class="badge rounded-pill alert-success">Active</span>
                             </div>
@@ -57,7 +57,7 @@
                                 <span>02.11.2022</span>
                             </div>
                             <div class="col-lg-2 col-sm-2 col-4 col-action text-end">
-                                <a href="#" class="btn btn-sm btn-brand rounded font-sm mt-15"><i class="material-icons md-edit"></i> Edit</a>
+                                <a href="{% url 'product_edit' %}" class="btn btn-sm btn-brand rounded font-sm mt-15"><i class="material-icons md-edit"></i> Edit</a>
                                 <a href="#" class="btn btn-sm btn-brand rounded font-sm mt-15" style="background-color: #B22222"><i class="material-icons md-delete_forever"></i> Delete</a>
                             </div>
                         </div> <!-- row .// -->
@@ -76,7 +76,7 @@
                                     </div>
                                 </a>
                             </div>
-                            <div class="col-lg-2 col-sm-2 col-4 col-price"> <span>$76.99</span> </div>
+                            <div class="col-lg-2 col-sm-2 col-4 col-price"> <span>₹76.99</span> </div>
                             <div class="col-lg-2 col-sm-2 col-4 col-status">
                                 <span class="badge rounded-pill alert-danger">Disabled</span>
                             </div>
@@ -84,7 +84,7 @@
                                 <span>02.11.2022</span>
                             </div>
                             <div class="col-lg-2 col-sm-2 col-4 col-action text-end">
-                                <a href="#" class="btn btn-sm btn-brand rounded font-sm mt-15"><i class="material-icons md-edit"></i> Edit</a>
+                                <a href="{% url 'product_edit' %}" class="btn btn-sm btn-brand rounded font-sm mt-15"><i class="material-icons md-edit"></i> Edit</a>
                                 <a href="#" class="btn btn-sm btn-brand rounded font-sm mt-15" style="background-color: #B22222"><i class="material-icons md-delete_forever"></i> Delete</a>
                             </div>
                         </div> <!-- row .// -->
@@ -102,7 +102,7 @@
                                     </div>
                                 </a>
                             </div>
-                            <div class="col-lg-2 col-sm-2 col-4 col-price"> <span>$18.00</span> </div>
+                            <div class="col-lg-2 col-sm-2 col-4 col-price"> <span>₹18.00</span> </div>
                             <div class="col-lg-2 col-sm-2 col-4 col-status">
                                 <span class="badge rounded-pill alert-warning">Archived</span>
                             </div>
@@ -110,7 +110,7 @@
                                 <span>02.11.2022</span>
                             </div>
                             <div class="col-lg-2 col-sm-2 col-4 col-action text-end">
-                                <a href="#" class="btn btn-sm btn-brand rounded font-sm mt-15"><i class="material-icons md-edit"></i> Edit</a>
+                                <a href="{% url 'product_edit' %}" class="btn btn-sm btn-brand rounded font-sm mt-15"><i class="material-icons md-edit"></i> Edit</a>
                                 <a href="#" class="btn btn-sm btn-brand rounded font-sm mt-15" style="background-color: #B22222"><i class="material-icons md-delete_forever"></i> Delete</a>
                             </div>
                         </div> <!-- row .// -->

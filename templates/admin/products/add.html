@@ -1,0 +1,128 @@
+{% extends 'admin/includes/base.html' %}
+{% load static %}
+{% block title %}Products{% endblock %}
+{% block content %}
+        <section class="content-main">
+            <div class="row">
+                <div class="col-9">
+                    <div class="content-header">
+                        <h2 class="content-title">Add New Product</h2>
+                        <div>
+                           
+                            
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <div class="card mb-4">
+                        <div class="card-header">
+                            <h4>Fill in the product details below.</h4>
+                        </div>
+                        <div class="card-body">
+                            <form>
+                                <div class="mb-4">
+                                    <label for="product_name" class="form-label">Product title</label>
+                                    <input type="text" placeholder="Type here" class="form-control" id="product_name">
+                                </div>
+                                <div class="mb-4">
+                                    <label class="form-label">Full description</label>
+                                    <textarea placeholder="Type here" class="form-control" rows="4"></textarea>
+                                </div>
+                                <div class="mb-4">
+                                    <label class="form-label">Stock</label>
+                                    <input type="text" placeholder="Type here" class="form-control">
+                                </div>
+                                <div class="row">
+                                    <div class="col-lg-4">
+                                        <div class="mb-4">
+                                            <label class="form-label">Old price</label>
+                                            <div class="row gx-2">
+                                                <input placeholder="₹" type="text" class="form-control">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-4">
+                                        <div class="mb-4">
+                                            <label class="form-label">New price</label>
+                                            <input placeholder="₹" type="text" class="form-control">
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-4">
+                                        <label class="form-label">Status</label>
+                                        <select class="form-select">
+                                            <option> Select </option>
+                                            <option> Active </option>
+                                            <option> Inactive </option>
+                                            <option> Available </option>
+                                            <option> Out of Stock </option>
+                                        </select>
+                                    </div>
+                                </div>
+                               
+                           
+                            </form>
+                        </div>
+                    </div> <!-- card end// -->
+
+                    <div class="card mb-4">
+                        <div class="card-header">
+                            <h4>Media</h4>
+                        </div>
+                        <div class="card-body">
+                            <div class="input-upload">
+                                <img src="{% static 'admin/assets/imgs/theme/upload.svg' %}" alt="">
+                                <input class="form-control" type="file">
+                            </div>
+                        </div>
+                    </div> <!-- card end// -->
+
+                    <div class="card mb-4">
+                        <div class="card-header">
+                            <h4>Media</h4>
+                        </div>
+                        <div class="card-body">
+                            <div class="input-upload">
+                                <img src="{% static 'admin/assets/imgs/theme/upload.svg' %}" alt="">
+                                <input class="form-control" type="file">
+                            </div>
+                        </div>
+                    </div> <!-- card end// -->
+
+                    <div class="card mb-4">
+                        <div class="card-header">
+                            <h4>Media</h4>
+                        </div>
+                        <div class="card-body">
+                            <div class="input-upload">
+                                <img src="{% static 'admin/assets/imgs/theme/upload.svg' %}" alt="">
+                                <input class="form-control" type="file">
+                            </div>
+                        </div>
+                    </div> <!-- card end// -->
+
+                   <div class="card mb-4 image-card">
+    <div class="card-header d-flex justify-content-center align-items-center">
+        <button class="btn btn-outline-primary add-image-btn" style="font-size: 10px; font-weight: bold;">
+            <i class="bi bi-plus-circle"></i> Add more images
+        </button>
+    </div>
+</div>
+
+                    <!-- card end// -->
+                   
+
+
+                  <button class="btn btn-md rounded font-sm hover-up" style="width: 100%; margin-bottom: 100px;">Add Product</button>
+                </div>
+                <div class="col-lg-3">
+                    
+
+                    
+
+                  
+                   
+                </div>
+            </div>
+            
+        </section> <!-- content-main end// -->
+{% endblock %}
