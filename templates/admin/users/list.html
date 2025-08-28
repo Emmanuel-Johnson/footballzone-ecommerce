@@ -37,6 +37,7 @@
                                 </tr>
                             </thead>
                             <tbody>
+                                {% for user in users %}
                                 <tr>
                                     <td width="40%">
                                         <a href="#" class="itemside">
@@ -44,39 +45,37 @@
                                                 <img src="{% static 'admin/assets/imgs/people/avatar2.jpg' %}" class="img-sm img-avatar" alt="Userpic">
                                             </div>
                                             <div class="info pl-3">
-                                                <h6 class="mb-0 title">Mary Monasa</h6>
-                                                <small class="text-muted">User ID: #129</small>
+                                                <h6 class="mb-0 title">{{ user.first_name }} {{ user.last_name }}</h6>
+                                                <small class="text-muted">User ID: #{{ user.id }}</small>
                                             </div>
                                         </a>
                                     </td>
-                                    <td>monalisa@example.com</td>
-                                    <td><span class="badge rounded-pill alert-success">Active</span></td>
-                                    <td>11.07.2022</td>
+                                    <td>{{ user.email }}</td>
+                                    {% if user.is_active %}
+                                    <td><span class="badge rounded-pill alert-success" style="width: 100px;">Active</span></td>
+                                    {% else %}
+                                    <td><span class="badge rounded-pill alert-danger" style="width: 100px;">Blocked</span></td>
+                                    {% endif %}
+                                    <td>{{ user.date_joined|date:"d.m.Y" }}</td>
+                                    {% if user.is_active %}
                                     <td class="text-end">
-                                        <a href="#" class="btn btn-sm btn-brand rounded font-sm mt-15" style="width: 80px; background-color: #B22222;">Block</a>
+                                        <a href="{% url 'user_block' user.id %}" class="btn btn-sm btn-brand rounded font-sm mt-15" style="width: 80px; background-color: #B22222;">Block</a>
                                     </td>
+                                    {% else %}
+                                    <td class="text-end">
+                                        <a href="{% url 'user_block' user.id %}" class="btn btn-sm btn-brand rounded font-sm mt-15" style="width: 80px;">Unblock</a>
+                                    </td>
+                                    {% endif %}
+                                    
                                 </tr>
+                                {% empty %}
                                 <tr>
-                                    <td width="40%">
-                                        <a href="#" class="itemside">
-                                            <div class="left">
-                                                <img src="{% static 'admin/assets/imgs/people/avatar2.jpg' %}" class="img-sm img-avatar" alt="Userpic">
-                                            </div>
-                                            <div class="info pl-3">
-                                                <h6 class="mb-0 title">Mary Monasa</h6>
-                                                <small class="text-muted">User ID: #129</small>
-                                            </div>
-                                        </a>
-                                    </td>
-                                    <td>monalisa@example.com</td>
-                                    <td><span class="badge rounded-pill alert-success">Active</span></td>
-                                    <td>11.07.2022</td>
-                                    <td class="text-end">
-                                        <a href="#" class="btn btn-sm btn-brand rounded font-sm mt-15" style="width: 80px; background-color: #B22222">Block</a>
-                                    </td>
+                                    <td colspan="5" class="text-center">No users found.</td>
                                 </tr>
+                                {% endfor %}
+                               
                                 
-                                <tr>
+                                <!-- <tr>
                                     <td width="40%">
                                         <a href="#" class="itemside">
                                             <div class="left">
@@ -94,26 +93,8 @@
                                     <td class="text-end">
                                         <a href="#" class="btn btn-sm btn-brand rounded font-sm mt-15" style="width: 80px;">Unblock</a>
                                     </td>
-                                </tr>
-                                <tr>
-                                    <td width="40%">
-                                        <a href="#" class="itemside">
-                                            <div class="left">
-                                                <img src="{% static 'admin/assets/imgs/people/avatar4.jpg' %}" class="img-sm img-avatar" alt="Userpic">
-                                            </div>
-                                            <div class="info pl-3">
-                                                <h6 class="mb-0 title">Eleanor Pena</h6>
-                                                <small class="text-muted">User ID: #439</small>
-                                            </div>
-                                        </a>
-                                    </td>
-                                    <td>eleanor2022@example.com</td>
-                                    <td><span class="badge rounded-pill alert-danger">Inactive</span></td>
-                                    <td>08.07.2022</td>
-                                    <td class="text-end">
-                                        <a href="#" class="btn btn-sm btn-brand rounded font-sm mt-15" style="width: 80px;">Unblock</a>
-                                    </td>
-                                </tr>
+                                </tr> -->
+                               
                             </tbody>
                         </table> <!-- table-responsive.// -->
                     </div>

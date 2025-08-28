@@ -12,33 +12,34 @@
                         
                         <div class="col-lg-9">
                             <section class="content-body p-xl-4">
-                                <form>
+                                <form method="POST">
+                                 {% csrf_token %}
                                     <div class="row">
                                         <div class="col-lg-8">
                                             <div class="row gx-3">
-                                                <div class="col-6  mb-3">
-                                                    <label class="form-label">First name</label>
-                                                    <input class="form-control" type="text" placeholder="Type here">
-                                                </div> <!-- col .// -->
-                                                <div class="col-6  mb-3">
-                                                    <label class="form-label">Last name</label>
-                                                    <input class="form-control" type="text" placeholder="Type here">
-                                                </div> <!-- col .// -->
-                                                <div class="col-lg-6  mb-3">
-                                                    <label class="form-label">Email</label>
-                                                    <input class="form-control" type="email" placeholder="example@mail.com">
-                                                </div> <!-- col .// -->
-                                                <div class="col-lg-6  mb-3">
-                                                    <label class="form-label">Phone</label>
-                                                    <input class="form-control" type="tel" placeholder="+1234567890">
-                                                </div> <!-- col .// -->
-                                                <div class="col-lg-12  mb-3">
+                                                <div class="col-lg-6 mb-3">
+            <label class="form-label">First name</label>
+            <input class="form-control" type="text" name="first_name" placeholder="Type here" required>
+        </div>
+                                                 <div class="col-lg-6 mb-3">
+            <label class="form-label">Last name</label>
+            <input class="form-control" type="text" name="last_name" placeholder="Type here" required>
+        </div>
+                                                <div class="col-lg-6 mb-3">
+            <label class="form-label">Email</label>
+            <input class="form-control" type="email" name="email" placeholder="example@gmail.com" required>
+        </div>
+                                                <div class="col-lg-6 mb-3">
+            <label class="form-label">Phone</label>
+            <input class="form-control" type="tel" name="phone_number" placeholder="+91 1234567890">
+        </div>
+                                               <div class="col-lg-12  mb-3">
                                                     <label class="form-label">Address</label>
                                                     <input class="form-control" type="text" placeholder="Type here">
-                                                </div> <!-- col .// -->
+                                                </div> 
                                                 
-                                            </div> <!-- row.// -->
-                                        </div> <!-- col.// -->
+                                            </div> 
+                                        </div> 
                                         <aside class="col-lg-4">
                                             <figure class="text-lg-center">
                                                 <img class="img-lg mb-3 img-avatar" src="{% static 'admin/assets/imgs/people/avatar1.jpg' %}" alt="User Photo">
@@ -48,11 +49,13 @@
                                                     </a>
                                                 </figcaption>
                                             </figure>
-                                        </aside> <!-- col.// -->
-                                    </div> <!-- row.// -->
+                                        </aside> 
+                                    </div> 
                                     <br>
-                                    <button class="btn btn-primary" type="submit">Add User</button>
+                                   <button class="btn btn-primary" type="submit">Add User</button>
                                 </form>
+                             
+
                                 <hr class="my-5">
                                 <div class="row" style="max-width:920px">
                                     <div class="col-md">
