@@ -12,16 +12,25 @@
             <div class="card mb-4">
                 <header class="card-header">
                     <div class="row gx-3">
+
                         <div class="col-lg-4 col-md-6 me-auto">
-                            <input type="text" placeholder="Search..." class="form-control">
+                            <form method="get" action="{% url 'users_list' %}" id="filterForm">
+                                <input type="text" name="username" placeholder="Search by name..." 
+                                    class="form-control" value="{{ request.GET.username }}"
+                                    >
+                           
                         </div>
+
                         <div class="col-lg-2 col-md-3 col-6">
-                            <select class="form-select">
-                                <option>Show all</option>
-                                <option>Active</option>
-                                <option>Inactive</option>
-                            </select>
-                        </div>
+    
+        <select class="form-select" name="status" onchange="document.getElementById('filterForm').submit()">
+            <option value="">Show all</option>
+            <option value="active" {% if request.GET.status == 'active' %}selected{% endif %}>Active</option>
+            <option value="inactive" {% if request.GET.status == 'inactive' %}selected{% endif %}>Inactive</option>
+        </select>
+    </form>
+</div>
+
                     </div>
                 </header> <!-- card-header end// -->
                 <div class="card-body">
@@ -40,7 +49,7 @@
                                 {% for user in users %}
                                 <tr>
                                     <td width="40%">
-                                        <a href="#" class="itemside">
+                                        <a href="{% url 'user_details' user.id %}" class="itemside">
                                             <div class="left">
                                                 <img src="{% static 'admin/assets/imgs/people/avatar2.jpg' %}" class="img-sm img-avatar" alt="Userpic">
                                             </div>
@@ -57,15 +66,17 @@
                                     <td><span class="badge rounded-pill alert-danger" style="width: 100px;">Blocked</span></td>
                                     {% endif %}
                                     <td>{{ user.date_joined|date:"d.m.Y" }}</td>
-                                    {% if user.is_active %}
+                                    
                                     <td class="text-end">
-                                        <a href="{% url 'user_block' user.id %}" class="btn btn-sm btn-brand rounded font-sm mt-15" style="width: 80px; background-color: #B22222;">Block</a>
-                                    </td>
-                                    {% else %}
-                                    <td class="text-end">
-                                        <a href="{% url 'user_block' user.id %}" class="btn btn-sm btn-brand rounded font-sm mt-15" style="width: 80px;">Unblock</a>
-                                    </td>
-                                    {% endif %}
+                                <button 
+                                    class="btn btn-sm btn-brand rounded font-sm mt-15 toggle-status"
+                                    data-user-id="{{ user.id }}"
+                                    data-is-active="{{ user.is_active }}"
+                                    style="width: 80px; {% if user.is_active %}background-color: #B22222;{% else %}background-color: rgb(4, 105, 99){% endif %}">
+                                    {% if user.is_active %}Block{% else %}Unblock{% endif %}
+                                </button>
+                            </td>
+
                                     
                                 </tr>
                                 {% empty %}
@@ -73,34 +84,12 @@
                                     <td colspan="5" class="text-center">No users found.</td>
                                 </tr>
                                 {% endfor %}
-                               
-                                
-                                <!-- <tr>
-                                    <td width="40%">
-                                        <a href="#" class="itemside">
-                                            <div class="left">
-                                                <img src="{% static 'admin/assets/imgs/people/avatar4.jpg' %}" class="img-sm img-avatar" alt="Userpic">
-                                            </div>
-                                            <div class="info pl-3">
-                                                <h6 class="mb-0 title">Eleanor Pena</h6>
-                                                <small class="text-muted">User ID: #439</small>
-                                            </div>
-                                        </a>
-                                    </td>
-                                    <td>eleanor2022@example.com</td>
-                                    <td><span class="badge rounded-pill alert-danger">Inactive</span></td>
-                                    <td>08.07.2022</td>
-                                    <td class="text-end">
-                                        <a href="#" class="btn btn-sm btn-brand rounded font-sm mt-15" style="width: 80px;">Unblock</a>
-                                    </td>
-                                </tr> -->
-                               
                             </tbody>
                         </table> <!-- table-responsive.// -->
                     </div>
                 </div> <!-- card-body end// -->
             </div> <!-- card end// -->
-            <div class="pagination-area mt-15 mb-50">
+            <!-- <div class="pagination-area mt-15 mb-50">
                 <nav aria-label="Page navigation example">
                     <ul class="pagination justify-content-start">
                         <li class="page-item active"><a class="page-link" href="#">01</a></li>
@@ -111,7 +100,85 @@
                         <li class="page-item"><a class="page-link" href="#"><i class="material-icons md-chevron_right"></i></a></li>
                     </ul>
                 </nav>
-            </div>
+            </div> -->
+            <div class="pagination-area mt-15 mb-50">
+    <nav aria-label="Page navigation example">
+        <ul class="pagination justify-content-start">
+            
+            {# Previous button #}
+            {% if page_obj.has_previous %}
+                <li class="page-item">
+                    <a class="page-link" href="?page={{ page_obj.previous_page_number }}{% if request.GET.username %}&username={{ request.GET.username }}{% endif %}{% if request.GET.status %}&status={{ request.GET.status }}{% endif %}">
+                        <i class="material-icons md-chevron_left"></i>
+                    </a>
+                </li>
+            {% endif %}
+
+            {# Page numbers #}
+            {% for num in page_obj.paginator.page_range %}
+                {% if page_obj.number == num %}
+                    <li class="page-item active">
+                        <a class="page-link" href="#">{{ num }}</a>
+                    </li>
+                {% else %}
+                    <li class="page-item">
+                        <a class="page-link" href="?page={{ num }}{% if request.GET.username %}&username={{ request.GET.username }}{% endif %}{% if request.GET.status %}&status={{ request.GET.status }}{% endif %}">
+                            {{ num }}
+                        </a>
+                    </li>
+                {% endif %}
+            {% endfor %}
+
+            {# Next button #}
+            {% if page_obj.has_next %}
+                <li class="page-item">
+                    <a class="page-link" href="?page={{ page_obj.next_page_number }}{% if request.GET.username %}&username={{ request.GET.username }}{% endif %}{% if request.GET.status %}&status={{ request.GET.status }}{% endif %}">
+                        <i class="material-icons md-chevron_right"></i>
+                    </a>
+                </li>
+            {% endif %}
+        </ul>
+    </nav>
+</div>
+
         </section> 
 
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+    document.querySelectorAll(".toggle-status").forEach(btn => {
+        btn.addEventListener("click", function () {
+            const userId = this.dataset.userId;
+
+            fetch("{% url 'user_block' 0 %}".replace("0", userId), {
+                method: "POST",
+                headers: {
+                    "X-CSRFToken": "{{ csrf_token }}",
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({})
+            })
+            .then(res => res.json())
+            .then(data => {
+                if (data.success) {
+                    // update button
+                    this.innerText = data.new_status === "active" ? "Block" : "Unblock";
+                    this.dataset.isActive = (data.new_status === "active");
+
+                    if (data.new_status === "active") {
+                        this.style.backgroundColor = "#B22222"; // red
+                    } else {
+                        this.style.backgroundColor = "rgb(4, 105, 99)"; // green
+                    }
+
+                    // update status badge
+                    const statusCell = this.closest("tr").querySelector("td:nth-child(3)");
+                    statusCell.innerHTML = data.new_status === "active"
+                        ? `<span class="badge rounded-pill alert-success" style="width: 100px;">Active</span>`
+                        : `<span class="badge rounded-pill alert-danger" style="width: 100px;">Blocked</span>`;
+                }
+            });
+        });
+    });
+});
+</script>
 {% endblock %}

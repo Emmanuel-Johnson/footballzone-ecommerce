@@ -1,7 +1,11 @@
 from django.shortcuts import render, redirect
 from django.shortcuts import redirect, get_object_or_404
+from django.core.paginator import Paginator
+from django.db.models import Q, Value
 from django.contrib import messages
 from accounts.models import Account 
+from django.http import JsonResponse
+from django.db.models.functions import Substr, StrIndex
 
 def login(request):
     return render(request, "admin/accounts/login.html")
@@ -13,7 +17,36 @@ def dashboard(request):
 
 def users_list(request):
     users = Account.objects.filter(is_superuser=False, is_staff=False).order_by('id')
-    return render(request, "admin/users/list.html", {"users": users})
+    user_data = request.GET.get('username')
+
+    if user_data:
+        users = users.filter(
+            Q(first_name__icontains=user_data) |
+            Q(last_name__icontains=user_data) 
+        )
+
+    status = request.GET.get('status')
+    if status == 'active':
+        users = users.filter(is_active=True)
+    elif status == 'inactive':
+        users = users.filter(is_active=False)
+
+    paginator = Paginator(users, 10)
+    page_number = request.GET.get("page")
+    page_obj = paginator.get_page(page_number)
+
+    context = {
+        "page_obj": page_obj,
+        "users": page_obj,  
+    }
+    return render(request, "admin/users/list.html", context)
+
+
+def user_details(request, user_id):
+    
+    return render(request, "admin/users/details.html")
+
+
 
 
 def user_add(request):
@@ -41,17 +74,15 @@ def user_add(request):
 
 
 def user_block(request, user_id):
-    user = get_object_or_404(Account, id=user_id)
-    
-    user.is_active = not user.is_active
-    user.save()
-
-    if user.is_active:
-        messages.success(request, f"{user.email} has been activated.")
-    else:
-        messages.warning(request, f"{user.email} has been blocked.")
-    
-    return redirect('users_list') 
+    if request.method == "POST":
+        user = get_object_or_404(Account, id=user_id)
+        user.is_active = not user.is_active
+        user.save()
+        return JsonResponse({
+            "success": True,
+            "new_status": "active" if user.is_active else "inactive"
+        })
+    return JsonResponse({"success": False}, status=400)
 
 
 def categories_list(request):
