@@ -11,6 +11,7 @@ urlpatterns = [
     path("user-details/<int:user_id>", views.user_details, name="user_details"),
     path("user-add/", views.user_add, name="user_add"),
     path("user-block/<int:user_id>", views.user_block, name="user_block"),
+    path('admin/add-address/', views.admin_add_address, name='admin_add_address'),
 
     path("categories-list/", views.categories_list, name="categories_list"),
     path("category-edit/", views.category_edit, name="category_edit"),

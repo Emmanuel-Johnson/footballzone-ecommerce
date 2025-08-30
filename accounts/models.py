@@ -1,6 +1,7 @@
+from django.db import models
 from django.contrib.auth.models import BaseUserManager
 from django.contrib.auth.models import AbstractUser
-from django.db import models
+
 
 class CustomUserManager(BaseUserManager):
     def create_user(self, email, password=None, **extra_fields):
@@ -38,6 +39,35 @@ class Account(AbstractUser):
 
     def __str__(self):
         return self.email
+
+
+
+class Address(models.Model):
+    user = models.ForeignKey(Account, on_delete=models.CASCADE, related_name='addresses')
+
+    name = models.CharField(max_length=100)
+    phone = models.CharField(max_length=10)
+    alt_phone = models.CharField(max_length=10, blank=True, null=True)
+
+    pincode = models.CharField(max_length=6)
+    locality = models.CharField(max_length=100, blank=True, null=True)
+    address = models.TextField()
+    city = models.CharField(max_length=50)
+    state = models.CharField(max_length=50)
+    landmark = models.CharField(max_length=100, blank=True, null=True)
+
+    ADDRESS_CHOICES = [
+        ('home', 'Home'),
+        ('work', 'Work'),
+    ]
+    address_type = models.CharField(max_length=10, choices=ADDRESS_CHOICES)
+
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+    is_default = models.BooleanField(default=False)  # optional
+
+    def __str__(self):
+        return f"{self.name} - {self.locality}, {self.city}"
 
 
 

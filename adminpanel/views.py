@@ -1,11 +1,11 @@
 from django.shortcuts import render, redirect
 from django.shortcuts import redirect, get_object_or_404
 from django.core.paginator import Paginator
-from django.db.models import Q, Value
+from django.db.models import Q
 from django.contrib import messages
-from accounts.models import Account 
+from accounts.models import Account, Address
 from django.http import JsonResponse
-from django.db.models.functions import Substr, StrIndex
+
 
 def login(request):
     return render(request, "admin/accounts/login.html")
@@ -43,8 +43,8 @@ def users_list(request):
 
 
 def user_details(request, user_id):
-    
-    return render(request, "admin/users/details.html")
+    user = get_object_or_404(Account, id=user_id)
+    return render(request, "admin/users/details.html", {"user": user})
 
 
 
@@ -83,6 +83,33 @@ def user_block(request, user_id):
             "new_status": "active" if user.is_active else "inactive"
         })
     return JsonResponse({"success": False}, status=400)
+
+
+
+def admin_add_address(request):
+    if request.method == 'POST':
+        user_id = request.POST.get('user_id')  # you need to send user id if adding for a specific user
+        user = Account.objects.get(id=user_id)  # get the user
+
+        try:
+            address = Address.objects.create(
+                user=user,
+                name=request.POST.get('name'),
+                phone=request.POST.get('phone'),
+                alt_phone=request.POST.get('alt_phone'),
+                pincode=request.POST.get('pincode'),
+                locality=request.POST.get('locality'),
+                address=request.POST.get('address'),
+                city=request.POST.get('city'),
+                state=request.POST.get('state'),
+                landmark=request.POST.get('landmark'),
+                address_type=request.POST.get('address_type')
+            )
+            return JsonResponse({'success': True, 'address': f"{address.name}, {address.address}, {address.city}"})
+        except Exception as e:
+            return JsonResponse({'success': False, 'error': str(e)})
+
+    return JsonResponse({'success': False, 'error': 'Invalid request'})
 
 
 def categories_list(request):
