@@ -10,6 +10,7 @@ urlpatterns = [
     path("users-list/", views.users_list, name="users_list"),
     path("user-details/<int:user_id>", views.user_details, name="user_details"),
     path("user-add/", views.user_add, name="user_add"),
+    path("user-address-add/", views.user_address_add, name="user_address_add"),
     path("user-block/<int:user_id>", views.user_block, name="user_block"),
     path('admin/add-address/', views.admin_add_address, name='admin_add_address'),
 

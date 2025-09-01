@@ -73,6 +73,9 @@ def user_add(request):
     return render(request, "admin/users/add.html")
 
 
+def user_address_add(request):
+    return render(request, "admin/users/address.html")
+
 def user_block(request, user_id):
     if request.method == "POST":
         user = get_object_or_404(Account, id=user_id)
