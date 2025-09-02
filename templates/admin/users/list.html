@@ -70,12 +70,14 @@
                                     
                                     <td class="text-end">
                                 <button 
-                                    class="btn btn-sm btn-brand rounded font-sm mt-15 toggle-status"
-                                    data-user-id="{{ user.id }}"
-                                    data-is-active="{{ user.is_active }}"
-                                    style="width: 80px; {% if user.is_active %}background-color: #B22222;{% else %}background-color: rgb(4, 105, 99){% endif %}">
-                                    {% if user.is_active %}Block{% else %}Unblock{% endif %}
-                                </button>
+    class="btn btn-sm btn-brand rounded font-sm mt-15 toggle-status"
+    data-user-id="{{ user.id }}"
+    data-is-active="{{ user.is_active }}"
+    data-username="{{ user.first_name }} {{ user.last_name }}"   
+    style="width: 80px; {% if user.is_active %}background-color: #B22222;{% else %}background-color: rgb(4, 105, 99){% endif %}">
+    {% if user.is_active %}Block{% else %}Unblock{% endif %}
+</button>
+
                             </td>
 
                                     
@@ -149,37 +151,68 @@ document.addEventListener("DOMContentLoaded", function () {
     document.querySelectorAll(".toggle-status").forEach(btn => {
         btn.addEventListener("click", function () {
             const userId = this.dataset.userId;
+            const isActive = this.dataset.isActive === "true";
 
-            fetch("{% url 'user_block' 0 %}".replace("0", userId), {
-                method: "POST",
-                headers: {
-                    "X-CSRFToken": "{{ csrf_token }}",
-                    "Content-Type": "application/json"
-                },
-                body: JSON.stringify({})
-            })
-            .then(res => res.json())
-            .then(data => {
-                if (data.success) {
-                    // update button
-                    this.innerText = data.new_status === "active" ? "Block" : "Unblock";
-                    this.dataset.isActive = (data.new_status === "active");
+            const actionText = isActive ? "block" : "unblock";
+            const buttonText = isActive ? "Yes, Block!" : "Yes, Unblock!";
+            const confirmColor = isActive ? "#B22222" : "rgb(4, 105, 99)";
+            const username = this.dataset.username;
 
-                    if (data.new_status === "active") {
-                        this.style.backgroundColor = "#B22222"; // red
-                    } else {
-                        this.style.backgroundColor = "rgb(4, 105, 99)"; // green
-                    }
+            Swal.fire({
+                title: `Are you sure?`,
+                text: `Do you really want to ${actionText} ${username}?`,
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonColor: confirmColor,
+                cancelButtonColor: "#6c757d",
+                confirmButtonText: buttonText
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    fetch("{% url 'user_block' 0 %}".replace("0", userId), {
+                        method: "POST",
+                        headers: {
+                            "X-CSRFToken": "{{ csrf_token }}",
+                            "Content-Type": "application/json"
+                        },
+                        body: JSON.stringify({})
+                    })
+                    .then(res => res.json())
+                    .then(data => {
+                        if (data.success) {
+                            // update button
+                            this.innerText = data.new_status === "active" ? "Block" : "Unblock";
+                            this.dataset.isActive = data.new_status === "active" ? "true" : "false";
+                            
 
-                    // update status badge
-                    const statusCell = this.closest("tr").querySelector("td:nth-child(3)");
-                    statusCell.innerHTML = data.new_status === "active"
-                        ? `<span class="badge rounded-pill alert-success" style="width: 100px;">Active</span>`
-                        : `<span class="badge rounded-pill alert-danger" style="width: 100px;">Blocked</span>`;
+
+                            if (data.new_status === "active") {
+                                this.style.backgroundColor = "#B22222"; // red
+                            } else {
+                                this.style.backgroundColor = "rgb(4, 105, 99)"; // green
+                            }
+
+                            // update status badge
+                            const statusCell = this.closest("tr").querySelector("td:nth-child(3)");
+                            statusCell.innerHTML = data.new_status === "active"
+                                ? `<span class="badge rounded-pill alert-success" style="width: 100px;">Active</span>`
+                                : `<span class="badge rounded-pill alert-danger" style="width: 100px;">Blocked</span>`;
+
+    // success toast
+    Swal.fire({
+        toast: true,
+        position: "top-end",
+        icon: "success",
+        title: `${username} has been ${data.new_status === "active" ? "unblocked" : "blocked"} successfully.`,
+        showConfirmButton: false,
+        timer: 3000
+    });
+                        }
+                    });
                 }
             });
         });
     });
 });
 </script>
+
 {% endblock %}
