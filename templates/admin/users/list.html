@@ -2,6 +2,8 @@
 {% load static %}
 {% block title %}Users{% endblock %}
 {% block content %}
+
+
 <section class="content-main">
             <div class="content-header">
                 <h2 class="content-title">Users List</h2>
@@ -92,18 +94,7 @@
                     </div>
                 </div> <!-- card-body end// -->
             </div> <!-- card end// -->
-            <!-- <div class="pagination-area mt-15 mb-50">
-                <nav aria-label="Page navigation example">
-                    <ul class="pagination justify-content-start">
-                        <li class="page-item active"><a class="page-link" href="#">01</a></li>
-                        <li class="page-item"><a class="page-link" href="#">02</a></li>
-                        <li class="page-item"><a class="page-link" href="#">03</a></li>
-                        <li class="page-item"><a class="page-link dot" href="#">...</a></li>
-                        <li class="page-item"><a class="page-link" href="#">16</a></li>
-                        <li class="page-item"><a class="page-link" href="#"><i class="material-icons md-chevron_right"></i></a></li>
-                    </ul>
-                </nav>
-            </div> -->
+           
             <div class="pagination-area mt-15 mb-50">
     <nav aria-label="Page navigation example">
         <ul class="pagination justify-content-start">
@@ -145,18 +136,17 @@
 </div>
 
         </section> 
-
 <script>
 document.addEventListener("DOMContentLoaded", function () {
     document.querySelectorAll(".toggle-status").forEach(btn => {
         btn.addEventListener("click", function () {
             const userId = this.dataset.userId;
             const isActive = this.dataset.isActive === "true";
+            const username = this.dataset.username;
 
             const actionText = isActive ? "block" : "unblock";
             const buttonText = isActive ? "Yes, Block!" : "Yes, Unblock!";
             const confirmColor = isActive ? "#B22222" : "rgb(4, 105, 99)";
-            const username = this.dataset.username;
 
             Swal.fire({
                 title: `Are you sure?`,
@@ -179,33 +169,33 @@ document.addEventListener("DOMContentLoaded", function () {
                     .then(res => res.json())
                     .then(data => {
                         if (data.success) {
-                            // update button
+                            // Update button text & status
                             this.innerText = data.new_status === "active" ? "Block" : "Unblock";
                             this.dataset.isActive = data.new_status === "active" ? "true" : "false";
-                            
 
+                            // Update button color
+                            this.style.backgroundColor = data.new_status === "active" ? "#B22222" : "rgb(4, 105, 99)";
 
-                            if (data.new_status === "active") {
-                                this.style.backgroundColor = "#B22222"; // red
-                            } else {
-                                this.style.backgroundColor = "rgb(4, 105, 99)"; // green
-                            }
-
-                            // update status badge
+                            // Update status badge
                             const statusCell = this.closest("tr").querySelector("td:nth-child(3)");
                             statusCell.innerHTML = data.new_status === "active"
                                 ? `<span class="badge rounded-pill alert-success" style="width: 100px;">Active</span>`
                                 : `<span class="badge rounded-pill alert-danger" style="width: 100px;">Blocked</span>`;
 
-    // success toast
-    Swal.fire({
-        toast: true,
-        position: "top-end",
-        icon: "success",
-        title: `${username} has been ${data.new_status === "active" ? "unblocked" : "blocked"} successfully.`,
-        showConfirmButton: false,
-        timer: 3000
-    });
+                            // Success toast
+                            Swal.fire({
+                                toast: true,
+                                position: "top-end",
+                                icon: "success",
+                                title: `${username} has been ${data.new_status === "active" ? "unblocked" : "blocked"} successfully.`,
+                                showConfirmButton: false,
+                                timer: 3000,
+                                timerProgressBar: true,
+                                didOpen: (toast) => {
+                                    toast.addEventListener('mouseenter', Swal.stopTimer);
+                                    toast.addEventListener('mouseleave', Swal.resumeTimer);
+                                }
+                            });
                         }
                     });
                 }
@@ -214,5 +204,4 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 });
 </script>
-
 {% endblock %}
