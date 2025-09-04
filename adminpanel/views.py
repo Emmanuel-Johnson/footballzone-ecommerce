@@ -4,6 +4,7 @@ from django.core.paginator import Paginator
 from django.db.models import Q
 from django.contrib import messages
 from accounts.models import Account, Address
+from products.models import Category
 from django.http import JsonResponse
 
 
@@ -116,11 +117,40 @@ def admin_add_address(request):
 
 
 def categories_list(request):
-    return render(request, "admin/categories/list.html")
+    if request.method == "POST":
+        name = request.POST.get("name")
+        status = request.POST.get("status", "Active")
+        description = request.POST.get("description")
+
+        Category.objects.create(
+            name=name,
+            status=status if status in ["Active", "Inactive"] else "Active",
+            description=description
+        )
+        return redirect("categories_list")  
+    categories = Category.objects.all().order_by('-created_at')
+    return render(request, "admin/categories/list.html", {"categories": categories})
 
 
-def category_edit(request):
-    return render(request, "admin/categories/edit.html")
+
+
+def category_edit(request, pk):
+    category = get_object_or_404(Category, pk=pk)
+
+    if request.method == "POST":
+        category.name = request.POST.get("name")
+        category.status = request.POST.get("status", "Active")
+        category.description = request.POST.get("description")
+        category.save()
+        return redirect("categories_list")  
+    
+    return render(request, "admin/categories/edit.html", {"category": category})
+
+
+def category_delete(request, pk):
+    category = get_object_or_404(Category, pk=pk)
+    category.delete()
+    return redirect("categories_list")  
 
 
 def products_list(request):
